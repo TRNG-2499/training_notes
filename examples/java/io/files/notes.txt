@@ -1,0 +1,4 @@
+Training Notes - Java I/O
+This line overwrote any previous file contents.
+BufferedWriter improves performance for repeated writes.
+This line was appended, not overwritten.
