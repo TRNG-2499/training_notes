@@ -1,0 +1,68 @@
+package com.revature.datastructures.maps;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+ * Maps are Data Structures which DO NOT inherit from
+ * the collection interface directly, but rather utilize
+ * other collection objects which do inherit from the 
+ * Collection interface in order to structure how the map 
+ * stores and manages its own data.
+ * 
+ * Maps use key-value pairs to organize held data. The
+ * Keys are a Set (non-duplicated) of values while the
+ * values themselves are another type of collection 
+ * depending on the type of Map created.
+ */
+public class MapSimulator {
+	public static void main(String[] args) {
+		System.out.println("::: Maps :::");
+		Map<String, Integer> hMap = new HashMap<String, Integer>();
+		hMap.put("Assembly", 1);
+		hMap.put("Binary", 2);
+		hMap.put("Compile", 3);
+		hMap.put("Compile", 4);
+		hMap.put("Compile", 5);		// When calling 'put()' on Map. If the key
+									// Already exists, you will REPLACE the current
+									// value for that key. i.e. "Compile: 5" is stored
+		hMap.put("DataStructure", 6);
+		hMap.put("Function", 7);
+//		System.out.println(hMap);
+		/*
+		 * Iterations using keys - Set
+		 */
+		System.out.println("Map - KeySet Loop");
+		for (String key : hMap.keySet()) {
+			// Using keySet() you can also iterate through a map, and search for the
+			// associated value at the same time (this is common)
+			System.out.println("Key is: " + key);
+		}
+
+		/*
+		 * Iteration using values - other Collection
+		 */
+		System.out.println("Map - Values Loop");
+		for (Integer num : hMap.values()) {
+			System.out.println("Value is: " + num);
+		}
+
+		/*
+		 * Iteration using Entries (k-v pairs)
+		 */
+		System.out.println("Map - EntrySet Loop");
+		for (Map.Entry<String, Integer> entry : hMap.entrySet()) {
+			System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+		}
+		/*
+		 * Entry<K, V> {
+		 * 	K key;
+		 *  V value;
+		 * 	K getKey() { return key; }
+		 * 	V getValue() {return value; }
+		 * }
+		 */
+		
+		System.out.println(hMap);
+	}
+}
