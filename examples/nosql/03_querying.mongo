@@ -1,0 +1,41 @@
+// SQL equivalent:
+// SELECT * FROM support_tickets;
+db.supportTickets.find({});
+
+
+// SQL equivalent:
+// SELECT * FROM support_tickets WHERE id = <ticket id>;
+// db.supportTickets.findOne({ _id: ObjectId('<ticket id>') });
+
+
+// SQL equivalent:
+// SELECT * FROM support_tickets WHERE subject = 'Add dark mode';
+// find() returns every match | findOne() returns just the first.
+db.supportTickets.find({ subject: "Add dark mode" });
+db.supportTickets.findOne({ subject: "Add dark mode" });
+
+
+// Equality on an array field matches if the value appears *anywhere* in the array.
+db.supportTickets.find({ labels: "bug" });
+
+
+// $in matches tickets that have at least one of the listed labels.
+db.supportTickets.find({ labels: { $in: ["bug", "performance"] } });
+
+
+// $all matches only tickets that have every listed label.
+db.supportTickets.find({ labels: { $all: ["bug", "urgent"] } });
+
+
+// $size matches on array fields that contain a specified number of elements
+db.supportTickets.find({ labels: { $size: 0 } });
+
+
+// Mongo Projections: specify which fields should be included in the documents
+// retrurned from the collection
+// SQL equivalent:
+// SELECT subject, labels FROM support_tickets;
+// (note: '_id' is returned by default, so exclude it explicitly, as SQL would not return it.)
+// Also note: all fields that are not included in the projection argument are set
+// with a value of 0 (i.e. they are NOT included by default.
+db.supportTickets.find({}, { subject: 1, labels: 1, _id: 0 });

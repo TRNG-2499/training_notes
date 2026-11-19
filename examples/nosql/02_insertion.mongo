@@ -1,0 +1,34 @@
+// Insertion is performed using the insertOne() function or the insertMany() function
+// Note that '_id' is omitted -- MongoDB generates it automatically (ObjectId).
+
+// INSERT INTO supportTickets (subject, description, labels)
+// VALUES ('Login fails on submit', 'Users see a 500 error after valid login.', ARRAY['bug', 'urgent']);
+db.supportTickets.insertOne({
+  subject: "Login fails on submit",
+  description: "Users see a 500 error after entering valid credentials.",
+  labels: ["bug", "urgent"]
+});
+
+
+// SQL equivalent:
+// INSERT INTO support_tickets (subject, description, labels)
+// VALUES ('Add dark mode', 'Several users have asked for a dark theme.', ARRAY['feature-request']),
+//        ('Typo on pricing page', '"Recieve" should be "Receive".', ARRAY['bug', 'wontfix']),
+//        ('Slow dashboard load', 'Dashboard takes 10+ seconds with large datasets.', ARRAY['performance', 'urgent']);
+db.supportTickets.insertMany([
+  {
+    subject: "Add dark mode",
+    description: "Several users have asked for a dark theme.",
+    labels: ["feature-request"]
+  },
+  {
+    subject: "Typo on pricing page",
+    description: "'Recieve' should be 'Receive'.",
+    labels: ["bug", "wontfix"]
+  },
+  {
+    subject: "Slow dashboard load",
+    description: "Dashboard takes 10+ seconds with large datasets.",
+    labels: ["performance", "urgent"]
+  }
+]);

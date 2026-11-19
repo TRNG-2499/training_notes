@@ -1,0 +1,74 @@
+// SQL equivalent: (update one column)
+// UPDATE support_tickets
+// SET description = '500 error after valid login. Reproduced on Chrome and Firefox.'
+// WHERE subject = 'Login fails on submit'
+db.supportTickets.updateOne(
+  { subject: "Login fails on submit" },
+  { $set: { description: "500 error after valid login. Reproduced on Chrome and Firefox." } }
+);
+
+
+// SQL equivalent (several columns in one statement):
+// UPDATE support_tickets
+// SET subject = 'Add dark mode theme',
+//     description = 'Requested by multiple customers. Should follow the OS theme setting.'
+// WHERE subject = 'Add dark mode';
+// Multiple fields can be set in the same $set operation:
+db.supportTickets.updateOne(
+  { subject: "Add dark mode" },
+  { $set: {
+      subject: "Add dark mode theme",
+      description: "Requested by multiple customers. Should follow the OS theme setting."
+  } }
+);
+
+// SQL equivalent (replace the whole labels array):
+// UPDATE support_tickets
+// SET labels = ARRAY['bug', 'resolved']
+// WHERE subject = 'Typo on pricing page';
+// $set on an array field replaces the ENTIRE array. To add or remove a single
+// label without touching the rest, use $addToSet or $pull instead (Topic 15).
+db.supportTickets.updateOne(
+  { subject: "Typo on pricing page" },
+  { $set: { labels: ["bug", "resolved"] } }
+);
+
+// updateMany() applies the change to ALL matches. "status" doesn't exist on these
+// documents yet, so $set adds it. In SQL this would need an ALTER TABLE first.
+db.supportTickets.updateMany(
+  { labels: "urgent" },
+  { $set: { status: "open" } }
+);
+
+// $unset is used to remove a field from a document - this reverses the 'status'
+// field addition above
+db.supportTickets.updateMany(
+  { labels: "urgent" },
+  { $unset: { status: "" } }
+)
+
+
+// SQL equivalent:
+// DELETE FROM support_tickets WHERE id = <ticket id>;
+db.supportTickets.deleteOne({ _id: ticketId });
+
+
+// SQL equivalent:
+// DELETE FROM support_tickets WHERE 'wontfix' = ANY(labels);
+// NOTE: Best practice is to run the same filter through find() first to check
+// what it matches so that you don't delete documents unintentionally
+db.supportTickets.find({ labels: "wontfix" });
+db.supportTickets.deleteMany({ labels: "wontfix" });
+
+
+// SQL equivalent:
+// DELETE FROM support_tickets;
+// Removes every document but keeps the collection, its validator and its indexes.
+db.supportTickets.deleteMany({});
+
+
+// SQL equivalent:
+// DROP TABLE support_tickets;
+// Removes the collection itself, including its validator and idx_labels. There is no undo.
+// Returns true if the collection existed.
+db.supportTickets.drop();

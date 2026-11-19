@@ -1,0 +1,31 @@
+// A validator can be used to ensure that documents, when added to a database
+// must match the schema, otherwise insertion of documents will be rejected.
+// Note: When adding new documents, you CAN include additional fields on the
+// inserted document, so long as no validator rule is broken, Mongo will still
+// flexibly add documents to this collection
+db.createCollection("supportTickets", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["subject", "description"],
+      properties: {
+        subject: {
+          bsonType: "string",
+          minLength: 1,
+          maxLength: 100,
+          description: "Subject of Ticket. Required string, 1-100 characters"
+        },
+        description: {
+          bsonType: "string",
+          description: "Text Description of Ticket. Required string - no character limit"
+        },
+        labels: {
+          bsonType: "array",
+          uniqueItems: true,          		// no duplicate labels within one ticket
+          items: { bsonType: "string" },	// The values in this array will be strings
+          description: "Optional array of unique strings, e.g. ['bug', 'urgent']"
+        }
+      }
+    }
+  }
+});
